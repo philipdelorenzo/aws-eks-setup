@@ -14,7 +14,7 @@ variable "subnet" {
   type        = string
 }
 
-variable "common_tags" {
+variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
   default     = {}

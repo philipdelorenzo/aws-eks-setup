@@ -1,12 +1,12 @@
 # --- EKS Cluster Module Configuration ---
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  #version = "~> 20.0" # Use a specific version
+  version = "~> 20.0" # Use a specific version
 
-  cluster_name    = "my-eks-cluster"
+  cluster_name    = "${var.environment}-eks-cluster"
   cluster_version = "1.32" # Specify your desired Kubernetes version
 
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
   subnet_ids  = module.vpc.private_subnets
   enable_irsa = true # Enable IAM Roles for Service Accounts (IRSA)
 

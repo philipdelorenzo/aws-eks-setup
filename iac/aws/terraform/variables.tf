@@ -1,11 +1,23 @@
+variable "vpc_name" {
+  description = "Name of the existing VPC to use (this will query by the Name tag to find the VPC ID)"
+  type        = string
+}
+
+variable "vpc_id" {
+  description = "Optional: the VPC ID to use directly. If provided, this will be passed to the aurora module. If empty, the network module will be used to discover/create the VPC by name."
+  type        = string
+  default     = ""
+}
+
 variable "project" {
   description = "Name of the project"
   type        = string
 }
 
-variable "vpc_name" {
-  description = "The VPC Name where the Aurora cluster will be deployed."
+variable "environment" {
+  description = "Deployment environment (e.g., dev, prod)"
   type        = string
+  default     = "dev"
 }
 
 variable "subnet" {
