@@ -6,7 +6,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "${var.project}-terraform-state"
+  bucket = var.bucket
 
   lifecycle {
     prevent_destroy = true
@@ -21,7 +21,7 @@ resource "aws_s3_bucket_versioning" "terraform_state_versioning" {
 }
 
 resource "aws_dynamodb_table" "terraform_locks" {
-  name           = "${var.project}-terraform-locks"
+  name           = "${var.bucket}-terraform-locks"
   hash_key       = "LockID"
   read_capacity  = 5
   write_capacity = 5

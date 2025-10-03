@@ -3,6 +3,11 @@ variable "project" {
   type        = string
 }
 
+variable "bucket" {
+  description = "S3 bucket for storing Terraform state"
+  type        = string
+}
+
 variable "REGION" {
   description = "AWS region"
   type        = string
@@ -20,7 +25,7 @@ variable "network_id" {
   type        = string
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for VPC"
+variable "subnet" {
+  description = "CIDR/Network ID block for EKS Cluster"
   type        = string
 }

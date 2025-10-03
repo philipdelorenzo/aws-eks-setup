@@ -5,7 +5,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket  = "${var.project}-terraform-state"
+    bucket  = var.bucket
     key     = "${var.project}/dev/terraform.tfstate"
     profile = var.profile
     region  = var.REGION
@@ -13,8 +13,7 @@ terraform {
 }
 
 module "eks_stack" {
-  source     = "../../"
-  project    = var.project
-  network_id = var.network_id
-  vpc_cidr   = var.vpc_cidr
+  source  = "../../"
+  project = var.project
+  subnet  = var.subnet
 }
