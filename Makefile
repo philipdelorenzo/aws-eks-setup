@@ -2,8 +2,8 @@
 # If you'd like your target to show up use the following:
 #
 # my_target: ##@category_name sample description for my_target
-service := "aws-base"
-service_title := "AWS Base Setup - VPC|Network, etc."
+service := "aws-eks"
+service_title := "AWS EKS Cluster"
 service_author := "Philip DeLorenzo"
 env := "dev"
 repo := "${service}-setup"
