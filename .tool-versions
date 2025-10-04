@@ -1,0 +1,6 @@
+python 3.13.0
+terraform 1.13.3
+terragrunt 0.86.2
+kubectl 1.34.1
+kustomize 5.7.1
+awscli 2.27.42
