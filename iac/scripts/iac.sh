@@ -5,6 +5,29 @@ set -eou pipefail
 BASEDIR="$(dirname "$0")"
 REPO="$(realpath "${BASEDIR}/../..")"
 
+prerequisites() {
+    # Bootstrap the backend S3 bucket for terraform state
+    if [[ -z "${PROJECT:-}" ]]; then
+        echo '[ERROR] - This script requires ${PROJECT} - the project name; i.e. ~> $service'
+        exit 1
+    fi
+    if [[ -z "${tfvars_file:-}" ]]; then
+        echo "[ERROR] - This script requires ${tfvars_file} - the tfvars file path"
+        exit 1
+    fi
+    export TF_STATE_BUCKET="${PROJECT}-terraform-state" # Default bucket name
+    
+    # Doppler Variables
+    if [[ -z "${AWS_PROFILE:-}" ]]; then
+        echo "[ERROR] - This script requires the AWS_PROFILE environment variable to be set"
+        exit 1
+    fi
+    if [[ -z "${AWS_REGION:-}" ]]; then
+        echo "[ERROR] - This script requires the AWS_REGION environment variable to be set"
+        exit 1
+    fi
+}
+
 state() {
     # If there is a STATE_UNIQUE_ID variable, append it to the bucket name to ensure uniqueness
     [[ -z "${STATE_UNIQUE_ID:-}" ]] || TF_STATE_BUCKET="${TF_STATE_BUCKET}-${STATE_UNIQUE_ID}"
@@ -115,14 +138,8 @@ while getopts ":abdfipruv" arg; do
             apply
             ;;
         b)
-            # Bootstrap the backend S3 bucket for terraform state
-            [[ -z "${PROJECT:-}" ]] && (echo '[ERROR] - This script requires ${PROJECT} - the project name; i.e. ~> $service'; exit 1)
-            [[ -z "${tfvars_file:-}" ]] && (echo "[ERROR] - This script requires ${tfvars_file} - the tfvars file path"; exit 1)
-            TF_STATE_BUCKET="${PROJECT}-terraform-state" # Default bucket name
-            # Doppler Variables
-            [[ -z "${AWS_PROFILE:-}" ]] && (echo "[ERROR] - This script requires the AWS_PROFILE environment variable to be set"; exit 1)
-            [[ -z "${AWS_REGION:-}" ]] && (echo "[ERROR] - This script requires the AWS_REGION environment variable to be set"; exit 1)
-            state
+            prerequisites # Ensure prerequisites are met
+            state # Set the state bucket name
             bootstrap
             ;;
         d)
@@ -135,40 +152,20 @@ while getopts ":abdfipruv" arg; do
             format
             ;;
         i)
-            [[ -z "${PROJECT:-}" ]] && (echo '[ERROR] - This script requires ${PROJECT} - the project name; i.e. ~> $service'; exit 1)
-            [[ -z "${tfvars_file:-}" ]] && (echo "[ERROR] - This script requires ${tfvars_file} - the tfvars file path"; exit 1)
-            TF_STATE_BUCKET="${PROJECT}-terraform-state" # Default bucket name
-            # Doppler Variables
-            [[ -z "${AWS_PROFILE:-}" ]] && (echo "[ERROR] - This script requires the AWS_PROFILE environment variable to be set"; exit 1)
-            [[ -z "${AWS_REGION:-}" ]] && (echo "[ERROR] - This script requires the AWS_REGION environment variable to be set"; exit 1)
+            prerequisites # Ensure prerequisites are met
             run_init
             ;;
         r)
-            [[ -z "${PROJECT:-}" ]] && (echo '[ERROR] - This script requires ${PROJECT} - the project name; i.e. ~> $service'; exit 1)
-            [[ -z "${tfvars_file:-}" ]] && (echo "[ERROR] - This script requires ${tfvars_file} - the tfvars file path"; exit 1)
-            TF_STATE_BUCKET="${PROJECT}-terraform-state" # Default bucket name
-            # Doppler Variables
-            [[ -z "${AWS_PROFILE:-}" ]] && (echo "[ERROR] - This script requires the AWS_PROFILE environment variable to be set"; exit 1)
-            [[ -z "${AWS_REGION:-}" ]] && (echo "[ERROR] - This script requires the AWS_REGION environment variable to be set"; exit 1)
+            prerequisites
             reconfigure
             refresh
             ;;
         p)
-            #[[ -z "${PROJECT:-}" ]] && (echo '[ERROR] - This script requires ${PROJECT} - the project name; i.e. ~> $service'; exit 1)
-            [[ -z "${tfvars_file:-}" ]] && (echo "[ERROR] - This script requires ${tfvars_file} - the tfvars file path"; exit 1)
-            #TF_STATE_BUCKET="${PROJECT}-terraform-state" # Default bucket name
-            # Doppler Variables
-            [[ -z "${AWS_PROFILE:-}" ]] && (echo "[ERROR] - This script requires the AWS_PROFILE environment variable to be set"; exit 1)
-            [[ -z "${AWS_REGION:-}" ]] && (echo "[ERROR] - This script requires the AWS_REGION environment variable to be set"; exit 1)
+            prerequisites
             plan
             ;;
         u)
-            [[ -z "${PROJECT:-}" ]] && (echo '[ERROR] - This script requires ${PROJECT} - the project name; i.e. ~> $service'; exit 1)
-            [[ -z "${tfvars_file:-}" ]] && (echo "[ERROR] - This script requires ${tfvars_file} - the tfvars file path"; exit 1)
-            TF_STATE_BUCKET="${PROJECT}-terraform-state" # Default bucket name
-            # Doppler Variables
-            [[ -z "${AWS_PROFILE:-}" ]] && (echo "[ERROR] - This script requires the AWS_PROFILE environment variable to be set"; exit 1)
-            [[ -z "${AWS_REGION:-}" ]] && (echo "[ERROR] - This script requires the AWS_REGION environment variable to be set"; exit 1)
+            prerequisites
             upgrade
             ;;
         v)
