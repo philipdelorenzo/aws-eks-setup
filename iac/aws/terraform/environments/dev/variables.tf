@@ -3,12 +3,17 @@ variable "project" {
   type        = string
 }
 
+variable "vpc_name" {
+  description = "Name of the existing VPC to use (this will query by the Name tag to find the VPC ID)"
+  type        = string
+}
+
 variable "bucket" {
   description = "S3 bucket for storing Terraform state"
   type        = string
 }
 
-variable "REGION" {
+variable "region" {
   description = "AWS region"
   type        = string
   default     = "us-west-2"
@@ -18,11 +23,6 @@ variable "profile" {
   description = "AWS CLI profile to use"
   type        = string
   default     = "default"
-}
-
-variable "network_id" {
-  description = "The Network ID of the VPC CIDR"
-  type        = string
 }
 
 variable "subnet" {

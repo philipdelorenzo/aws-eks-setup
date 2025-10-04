@@ -1,13 +1,13 @@
 # --- EKS Cluster Module Configuration ---
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.0" # Use a specific version
+  version = "~> 21.0" # Use a specific version
 
-  cluster_name    = "${var.environment}-eks-cluster"
-  cluster_version = "1.32" # Specify your desired Kubernetes version
+  name               = "${var.environment}-eks-cluster"
+  kubernetes_version = "1.32" # Specify your desired Kubernetes version
 
   vpc_id      = var.vpc_id
-  subnet_ids  = module.vpc.private_subnets
+  subnet_ids  = var.subnet_ids
   enable_irsa = true # Enable IAM Roles for Service Accounts (IRSA)
 
   # Optional: Adds the current AWS caller identity as an administrator
@@ -20,8 +20,8 @@ module "eks" {
       max_size     = 3
       desired_size = 2
 
-      instance_types = ["t3.medium"]              # Choose appropriate instance types
-      subnet_ids     = module.vpc.private_subnets # Typically nodes run in private subnets
+      instance_types = ["t3.medium"]  # Choose appropriate instance types
+      subnet_ids     = var.subnet_ids # Typically nodes run in private subnets
 
       # Labels to add to nodes (optional)
       labels = {

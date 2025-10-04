@@ -2,8 +2,8 @@
 
 set -eou pipefail
 
-BASEDIR=$(dirname "$0")
-REPO=${BASEDIR}/../..
+BASEDIR="$(dirname "$0")"
+REPO="$(realpath "${BASEDIR}/../..")"
 
 state() {
     # If there is a STATE_UNIQUE_ID variable, append it to the bucket name to ensure uniqueness
@@ -51,8 +51,7 @@ reconfigure() {
 }
 
 refresh() {
-    cd ${REPO}/iac/aws/terraform/environments/dev || exit 1 && \
-    terraform refresh --profile "${AWS_PROFILE}"
+    cd ${REPO}/iac/aws/terraform/environments/dev || exit 1 && terraform refresh
 }
 
 plan() {

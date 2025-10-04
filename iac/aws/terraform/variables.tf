@@ -4,7 +4,7 @@ variable "vpc_name" {
 }
 
 variable "vpc_id" {
-  description = "Optional: the VPC ID to use directly. If provided, this will be passed to the aurora module. If empty, the network module will be used to discover/create the VPC by name."
+  description = "Optional: the VPC ID to use directly. If provided, this will be passed to the eks module. If empty, the network module will be used to discover/create the VPC by name."
   type        = string
   default     = ""
 }
@@ -25,7 +25,7 @@ variable "subnet" {
   type        = string
 }
 
-variable "REGION" {
+variable "region" {
   description = "AWS region"
   type        = string
   default     = "us-west-2"

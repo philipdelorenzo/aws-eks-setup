@@ -5,11 +5,13 @@ module "network" {
   subnet      = var.subnet
   environment = var.environment
 
-  common_tags = var.common_tags
+  tags = var.tags
 }
 module "eks" {
-  source  = "./modules/eks"
-  project = var.project
-  tags    = local.common_tags
-  subnet  = var.subnet
+  source      = "./modules/eks"
+  vpc_id      = var.vpc_id != "" ? var.vpc_id : module.network.vpc_id
+  subnet_ids  = module.network.eks_subnet_ids
+  region      = var.region
+  environment = var.environment
+  tags        = var.tags
 }

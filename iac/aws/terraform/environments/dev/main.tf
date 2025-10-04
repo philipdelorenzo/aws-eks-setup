@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = var.REGION
+  region  = var.region
   profile = var.profile
 }
 
@@ -13,7 +13,9 @@ terraform {
 }
 
 module "eks_stack" {
-  source  = "../../"
-  project = var.project
-  subnet  = var.subnet
+  source   = "../../"
+  project  = var.project
+  region   = var.region
+  vpc_name = var.vpc_name
+  subnet   = var.subnet
 }
