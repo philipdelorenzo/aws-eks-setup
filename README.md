@@ -1,14 +1,12 @@
-# aws-basic-setup
+# aws-eks-setup
 
-A simple Terraform project that sets up a VPC with:
+A simple Terraform project that sets up an EKS Cluster with:
 
-- 10.10.0.0/16 CIDR - You can change this in the Makefile to a different Network ID if desired.
-- Internet Gateway
-- NAT
-- Security Group
-- Route Tables
+- 10.10.1.0/24 CIDR - You can change this in the Makefile to a different Network ID if desired.
 
 ## Prerequisites
+
+A pre-existing VPC is needed - see [AWS Basic Setup](https://github.com/philipdelorenzo/aws-basic-setup).
 
 ## AWS CLI Configure
 
